@@ -1,6 +1,5 @@
 const fs = require('fs')
 const usernames = require('./usernames/usernames.json')
-const { isDate, isDateish, trimTokens, isNumeric } = require('./utils')
 
 // Accounts:
 const accounts = [

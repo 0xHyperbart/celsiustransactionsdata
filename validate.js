@@ -8,6 +8,7 @@ const singleAddresses = new Set([])
 const usedAccounts = new Set([])
 const usedTypes = new Set([])
 const usedDescriptivePurposes = new Set([])
+const usedCoins = new Set([])
 
 // Accounts:
 const accounts = [
@@ -46,10 +47,11 @@ const types = [
 const coins = [
     'ETH', 'BTC', 'USDC', 'CEL', 'LTC', 'BCH', 'MANA', 'MATIC', 'ADA', 'LINK',
     'SNX', 'AAVE', 'UNI', 'OMG', 'SUSHI', 'UMA', 'XTZ', 'MCDAI', 'ZEC', 'DOGE',
-    'DOT', 'SOL', 'AVAX', 'USDT ERC20', 'GUSD', 'XRP', 'LUNC', 'DASH', 'COMP',
+    'DOT', 'SOL', 'AVAX', 'USDTERC20', 'GUSD', 'XRP', 'LUNC', 'DASH', 'COMP',
     'BNB', 'PAXG', 'XLM', 'BAT', 'BUSD', 'EOS', 'BSV', 'PAX', 'ETC', 'ZRX',
     'SGB', 'TCAD', 'KNC', 'TAUD', 'SPARK', 'TUSD', 'UST', 'THKD', 'BNT', 'TGBP',
-    'LPT', 'MKR', 'WBTC', 'XAUT', 'CRV', 'ZUSD', 'BADGER', 'YFI', 'CVX', 'WDGLD'
+    'LPT', 'MKR', 'WBTC', 'XAUT', 'CRV', 'ZUSD', 'BADGER', 'YFI', 'CVX', 'WDGLD',
+    '1INCH'
 ]
 
 function validateFieldsNotNull(page) {
@@ -202,6 +204,12 @@ for (let i = 47; i <= 14384; i++) {
         usedDescriptivePurposes.add(row.descriptivePurpose)
     }
 
+    // validate that coins are not too variant
+    for(let i = 0; i < page.length; i++) {
+        const row = page[i]
+        usedCoins.add(row.coin)
+    }
+
     // validate dates
     // validate accounts are not too variant
     // validate types are not too variant
@@ -298,4 +306,9 @@ if (!eqSet(usedTypes, new Set(types))) {
 // validate descriptivePurposes
 if (!eqSet(usedDescriptivePurposes, new Set(descriptivePurposes))) {
     throw new Error(`Descriptive purposes don't match`)
+}
+
+// validate coins
+if (!eqSet(usedCoins, new Set(coins))) {
+    throw new Error(`Coins don't match`)
 }

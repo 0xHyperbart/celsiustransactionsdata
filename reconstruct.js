@@ -7,7 +7,7 @@ const accounts = [
     "Earn - Interest; Earn, Custody or Withheld - Rewards",
     "Earn",
     "Custody",
-    "Withheld"
+    "Witheld"
 ]
 
 // Descriptive Purpose:
@@ -114,7 +114,7 @@ function reconstruct(page, pageNum) {
 
         if (mode === "date") {
             // TODO: might not work if token is just "Ear"
-            if (token.startsWith("Earn") || token.startsWith('Custody') || token.startsWith('Withheld')) {
+            if (token.startsWith("Earn") || token.startsWith('Custody') || token.startsWith('Witheld')) {
                 mode = "account"
                 date = trimTokens(stack)
                 stack = [token]

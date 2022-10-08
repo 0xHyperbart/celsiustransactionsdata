@@ -5,7 +5,7 @@ const accounts = [
     "Custody",
     "EarnIncoming",
     "EarnOutgoing",
-    "Withheld"
+    "Witheld"
 ]
 
 // Descriptive Purpose:

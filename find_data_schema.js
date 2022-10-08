@@ -10,7 +10,7 @@ function isDate(token) {
 // "Custody"
 // "EarnIncoming"
 // "EarnOutgoing"
-// "Withheld"
+// "Witheld"
 
 // Descriptive Purpose:
 // "Collateral"

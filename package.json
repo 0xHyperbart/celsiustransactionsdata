@@ -1,5 +1,6 @@
 {
   "dependencies": {
-    "pdf2json": "^2.1.0"
+    "pdf2json": "^2.1.0",
+    "sqlite3": "^5.1.2"
   }
 }

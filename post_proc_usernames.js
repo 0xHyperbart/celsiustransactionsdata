@@ -10,6 +10,8 @@ usernames["CHARLIE VIELMA"] = ["CHARLIE VIELMA"]
 delete usernames["00DIDIER FONTAINE"];
 usernames["DIDIER FONTAINE"] = ["DIDIER FONTAINE"]
 
+usernames["INVICTUS CAPITAL FINANCIAL TECHNOLOGIES SPC"] = ["INVICTUS CAPITAL FINANCIAL TECHNOLOGIES SPC"]
+
 fs.writeFile(`./usernames/usernames.json`, JSON.stringify(usernames, null, 2), (err) => {
     console.log('usernames patched');
 });

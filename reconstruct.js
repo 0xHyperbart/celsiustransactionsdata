@@ -1,6 +1,6 @@
 const fs = require('fs')
 const usernames = require('./usernames/usernames.json')
-const { isDate, isDateish, trimTokens } = require('./utils')
+const { isDate, isDateish, trimTokens, isNumeric } = require('./utils')
 
 // Accounts:
 const accounts = [
@@ -44,16 +44,8 @@ const coins = [
     'LPT', 'MKR', 'WBTC', 'XAUT', 'CRV', 'ZUSD', 'BADGER', 'YFI', 'CVX', 'WDGLD'
 ]
 
-function reconstruct(page) {
+function reconstruct(page, pageNum) {
     const contPage = page.flat()
-
-    function next() {
-        const next = contPage.shift()
-        if (next === undefined) {
-            return null
-        }
-        return next
-    }
 
     let stack = []
 
@@ -70,6 +62,41 @@ function reconstruct(page) {
 
     let table = []
 
+    function next() {
+        const next = contPage.shift()
+        if (next === undefined) {
+            return null
+        }
+        return next
+    }
+    function lookAhead() {
+        return contPage[0]
+    }
+    function endRow() {
+        const row = {
+            username,
+            address,
+            date,
+            account,
+            type,
+            descriptivePurpose,
+            coin,
+            coinQuantity,
+            coinUSD
+        }
+        table.push(row)
+        username = null
+        address = null
+        date = null
+        account = null
+        type = null
+        descriptivePurpose = null
+        coin = null
+        coinQuantity = null
+        coinUSD = null
+    }
+
+
     while(true) {
         const token = next()
         if (token === null) {
@@ -79,7 +106,7 @@ function reconstruct(page) {
         if (mode === "address") {
             if (isDate(token) || isDateish(token)) {
                 mode = "date"
-                address = stack
+                address = trimTokens(stack)
                 stack = [token]
                 continue
             }
@@ -96,6 +123,23 @@ function reconstruct(page) {
         }
 
         if (mode === "coin_quantity") {
+            if (token === '🟥') {
+                if (isNumeric(lookAhead())) {
+                    lookaheadToken = next()
+                    coinQuantity = [...stack, lookaheadToken]
+                    mode = 'coin_usd'
+                    stack = []
+                    // throw new Error(`stop ${pageNum}`)
+                    continue
+                }
+                else {
+                    coinQuantity = stack
+                    mode = 'username'
+                    stack = []
+                    endRow()
+                    continue
+                }
+            }
             if (token[0] == '$' || token[1] == '$') {
                 mode = "coin_usd"
                 coinQuantity = stack
@@ -141,28 +185,7 @@ function reconstruct(page) {
             if (token === '🟥') {
                 mode = "username"
                 coinUSD = stack
-                const row = {
-                    username,
-                    address,
-                    date,
-                    account,
-                    type,
-                    descriptivePurpose,
-                    coin,
-                    coinQuantity,
-                    coinUSD
-                }
-                table.push(row)
-                username = null
-                address = null
-                date = null
-                account = null
-                type = null
-                descriptivePurpose = null
-                coin = null
-                coinQuantity = null
-                coinUSD = null
-
+                endRow()
                 stack = []
                 continue
             }
@@ -179,27 +202,17 @@ function reconstruct(page) {
             }
         }
     }
-    const row = {
-        username,
-        address,
-        date,
-        account,
-        type,
-        descriptivePurpose,
-        coin,
-        coinQuantity,
-        coinUSD
+    endRow()
+    if (mode !== 'username') {
+        console.log('mode', mode)
     }
-    console.log('mode', mode)
-
-    table.push(row)
     return table
 }
 
 for (let i = 47; i <= 14384; i++) {
     const pageNum = i - 46
     const page = require(`./json-pass-1/coin_transactions_page_${pageNum}.json`);
-    const table = reconstruct(page)
+    const table = reconstruct(page, pageNum)
     fs.writeFile(`./json-pass-2/coin_transactions_${pageNum}.json`, JSON.stringify(table, null, 2), (err) => {
         console.log('processed page ' + pageNum);
     });

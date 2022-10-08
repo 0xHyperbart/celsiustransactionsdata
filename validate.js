@@ -211,10 +211,6 @@ for (let i = 47; i <= 14384; i++) {
     }
 
     // validate dates
-    // validate accounts are not too variant
-    // validate types are not too variant
-    // validate descriptive purposes are not too variant
-    // validate coins are not too variant
     // validate that coin quantity is parsable
 
     if (!validatePageRowCount(page, i)) {

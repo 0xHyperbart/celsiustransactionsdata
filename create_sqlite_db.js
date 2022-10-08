@@ -5,11 +5,12 @@ db.serialize(() => {
     db.run("BEGIN TRANSACTION");
 
     db.run("DROP TABLE IF EXISTS transactions");
+    db.run("DROP TABLE IF EXISTS transactions_search");
 
     db.run(`CREATE TABLE transactions (
+        username_address TEXT,
         username TEXT,
         address TEXT,
-        username_address TEXT,
         date TEXT,
         account TEXT,
         type TEXT,
@@ -22,7 +23,7 @@ db.serialize(() => {
 
     db.run("BEGIN TRANSACTION");
 
-    for (let i = 47; i <= 14384; i++) {
+    for (let i = 47; i <= 47; i++) {
         const pageNum = i - 46
         const page = require(`./json-pass-3/coin_transactions_${pageNum}.json`);
         for(let i = 0; i < page.length; i++) {
@@ -30,12 +31,12 @@ db.serialize(() => {
             const {address, date, account, type, descriptivePurpose, coin, coinQuantity} = row
             const username = JSON.stringify(row.username)
             const coinUSD = row.coinUSD || ""
-            const username_address = row.username.join('') + address
+            const username_address = `${row.username.join('')} ${address}`
             db.run(
                 `INSERT INTO transactions (
+                    username_address,
                     username,
                     address,
-                    username_address,
                     date,
                     account,
                     type,
@@ -43,10 +44,50 @@ db.serialize(() => {
                     coin,
                     coin_quantity,
                     coin_usd
-                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`, username, address, username_address, date, account, type, descriptivePurpose, coin, coinQuantity, coinUSD);
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`, username_address, username, address, date, account, type, descriptivePurpose, coin, coinQuantity, coinUSD);
         }
     }
     db.run("COMMIT");
+
+    db.run("BEGIN TRANSACTION");
+    db.run(`CREATE VIRTUAL TABLE transactions_search USING fts5(
+        username_address,
+        username,
+        address,
+        date,
+        account,
+        type,
+        descriptive_purpose,
+        coin,
+        coin_quantity,
+        coin_usd
+    );`)
+    db.run(
+    `INSERT INTO transactions_search(
+        username_address,
+        username,
+        address,
+        date,
+        account,
+        type,
+        descriptive_purpose,
+        coin,
+        coin_quantity,
+        coin_usd
+    ) SELECT 
+        username_address, 
+        username, 
+        address, 
+        date, 
+        account, 
+        type, 
+        descriptive_purpose, 
+        coin, 
+        coin_quantity, 
+        coin_usd 
+    FROM transactions;`);
+    db.run("COMMIT");
+
 });
 
 db.close();

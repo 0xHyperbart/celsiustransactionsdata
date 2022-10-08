@@ -1,4 +1,3 @@
-// import fs from "fs";
 const fs = require('fs')
 
 function cleanPage(pageNum) {

@@ -81,6 +81,9 @@ function reconstruct(page, pageNum) {
     function lookAhead() {
         return contPage[0]
     }
+    function lookAhead7() {
+        return contPage.slice(0, 7)
+    }
     function endRow() {
         const row = {
             username,
@@ -228,11 +231,25 @@ function reconstruct(page, pageNum) {
         stack.push(token)
 
         if (mode === "username") {
-            if (trimTokens(stack).length && usernames[trimTokens(stack).join('')]) {
-                mode = "address"
-                username = trimTokens(stack)
-                stack = []
-                continue
+            const trimmedTokens = trimTokens(stack)
+            if (trimmedTokens.length && usernames[trimmedTokens.join('')]) {
+                const lookingAhead7 = lookAhead7()
+                const addressRedactedIndex = lookingAhead7.indexOf('ADDRESS REDACTED')
+                if (addressRedactedIndex !== -1) {
+                    mode = "address"
+                    username = trimTokens([...trimmedTokens, ...lookingAhead7.slice(0, addressRedactedIndex)])
+                    for (let i = 0; i < addressRedactedIndex; i++) {
+                        next()
+                    }
+                    stack = []
+                    continue    
+                }
+                else {
+                    mode = "address"
+                    username = trimmedTokens
+                    stack = []
+                    continue    
+                }
             }
         }
     }

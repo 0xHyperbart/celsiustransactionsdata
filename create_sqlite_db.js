@@ -22,7 +22,7 @@ db.serialize(() => {
 
     db.run("BEGIN TRANSACTION");
 
-    for (let i = 47; i <= 47; i++) {
+    for (let i = 47; i <= 14384; i++) {
         const pageNum = i - 46
         const page = require(`./json-pass-3/coin_transactions_${pageNum}.json`);
         for(let i = 0; i < page.length; i++) {

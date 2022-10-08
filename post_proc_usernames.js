@@ -1,5 +1,17 @@
 const fs = require('fs')
 const usernames = require('./usernames/usernames.json')
+const { isNumericFully } = require('./utils')
+
+const usernamesArray = Object.keys(usernames).map((usernameKey) => {
+    return [usernameKey, usernames[usernameKey]]
+})
+
+for (let i = 0; i < usernamesArray.length; i++) {
+    const [usernameKey, usernameTokens] = usernamesArray[i]
+    if (isNumericFully(usernameTokens[0])) {
+        delete usernames[usernameKey];
+    }
+}
 
 delete usernames["0ALEC STEIMEL"];
 usernames["ALEC STEIMEL"] = ["ALEC STEIMEL"]

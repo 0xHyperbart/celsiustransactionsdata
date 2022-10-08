@@ -10,7 +10,7 @@ module.exports.isNumericFully = function isNumeric(token) {
     return /^[\d\(\.]+$/.test(token)
 }
 module.exports.isDateish = function isNumeric(token) {
-    return /^\d\d?$/.test(token)
+    return /^\d\d?\/?\d?\d?$/.test(token)
 }
 module.exports.isDollarSign = function isNumeric(token) {
     return token.includes('$')

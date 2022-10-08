@@ -49,16 +49,19 @@ for (let i = 47; i <= 14384; i++) {
     const page = require(`./json-pass-2/coin_transactions_${pageNum}.json`);
 
     if (page.length === 221) {
-        continue // ok
+        continue // normal page
     }
     if (page.length === 12 && i === 4570) {
-        continue // ok
+        continue // exception page
     }
     if (page.length === 135 && i === 9093) {
-        continue // ok
+        continue // exception page
+    }
+    if (page.length === 187 && i === 13622) {
+        continue // exception page
     }
     if (page.length === 78 && i === 14384) {
-        continue // ok
+        continue // last page
     }
 
     console.log(`Page ${pageNum} is not valid. Page length: ${page.length}`)

@@ -100,6 +100,24 @@ function validatePageRowCount(page, i) {
     return false
 }
 
+function validateCoinUsd(page) {
+    // validate all fields are filled out (not null) (apart from coinUSD)
+    for(let i = 0; i < page.length; i++) {
+        const row = page[i]
+        // TODO: if row.coinUSD is [], set it to null
+        const coinUSD = row.coinUSD ? row.coinUSD.join('') : null
+        if (coinUSD) {
+            const dollarMatch = coinUSD.match(/^\(?\$[\d\,]+\.\d\d\)?$/)
+            if (!dollarMatch) {
+                console.log('coinUSD',coinUSD, row.coinUSD)
+                return false
+            }
+        }
+    }
+    return true
+}
+
+
 for (let i = 47; i <= 14384; i++) {
     const pageNum = i - 46
     const page = require(`./json-pass-2/coin_transactions_${pageNum}.json`);
@@ -112,7 +130,6 @@ for (let i = 47; i <= 14384; i++) {
     // validate types are not too variant
     // validate descriptive purposes are not too variant
     // validate coins are not too variant
-    // validate coinUSD always having 2 decimal place for cents
     // validate outgoing always being a negative amount
 
     if (!validatePageRowCount(page, i)) {
@@ -121,6 +138,10 @@ for (let i = 47; i <= 14384; i++) {
 
     if (!validateFieldsNotNull(page)) {
         throw new Error(`Page ${pageNum} doesn't have all fields filled out.`)
+    }
+
+    if (!validateCoinUsd(page)) {
+        throw new Error(`Page ${pageNum} doesn't have the right coin USD values.`)
     }
 
 }

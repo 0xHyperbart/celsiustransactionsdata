@@ -114,7 +114,6 @@ function validateCoinUsd(page) {
     // validate all fields are filled out (not null) (apart from coinUSD)
     for(let i = 0; i < page.length; i++) {
         const row = page[i]
-        // TODO: if row.coinUSD is [], set it to null
         const coinUSD = row.coinUSD ? row.coinUSD.join('') : null
         if (coinUSD) {
             const dollarMatch = coinUSD.match(/^\(?\$[\d\,]+\.\d\d\)?$/)
@@ -131,7 +130,6 @@ function validateOutgoing(page) {
     for(let i = 0; i < page.length; i++) {
         const row = page[i]
         const coinQuantity = row.coinQuantity.join('')
-        // TODO: if row.coinUSD is [], set it to null
         const coinUSD = row.coinUSD ? row.coinUSD.join('') : null
         if (row.type === 'Outgoing') {
             if (!coinQuantity.match(/^\([\d\.\,]+\)$/) && coinQuantity !== '0.0') {

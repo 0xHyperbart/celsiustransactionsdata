@@ -211,4 +211,12 @@ for (let i = 0; i < usernamesLeftArray.length; i++) {
         delete usernamesLeft[usernameKey]
     }
 }
+
+delete usernamesLeft['FAHRETTIN '] // checked, matched ok
+delete usernamesLeft["MATIJA KAZIMIROVI"] // checked, matched ok
+delete usernamesLeft["KAROL MIESZA"] // checked, matched ok
+delete usernamesLeft["MIKS VASI"] // checked, matched ok
+delete usernamesLeft["QUÂN TR"] // checked, matched ok
+delete usernamesLeft["TOMÁŠ HLA"] // checked, matched ok
+
 console.log('unused usernames',usernamesLeft)

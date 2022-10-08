@@ -1,9 +1,11 @@
 const fs = require('fs')
 const usernamesLeft = {...require('./usernames/usernames.json')}
 const usernamesCopy = {...require('./usernames/usernames.json')}
+const { eqSet } = require('./utils')
 
 const multiAddresses = new Set([])
 const singleAddresses = new Set([])
+const usedAccounts = new Set([])
 
 // Accounts:
 const accounts = [
@@ -180,6 +182,12 @@ for (let i = 47; i <= 14384; i++) {
         }
     }
 
+    // validate that accounts are not too variant
+    for(let i = 0; i < page.length; i++) {
+        const row = page[i]
+        usedAccounts.add(row.account)
+    }
+
     // validate dates
     // validate accounts are not too variant
     // validate types are not too variant
@@ -262,3 +270,8 @@ if (multiAddresses.size > 0) {
 }
 
 // console.log('singleAddresses',singleAddresses)
+
+// validate accounts
+if (!eqSet(usedAccounts, new Set(accounts))) {
+    throw new Error(`Accounts don't match`)
+}

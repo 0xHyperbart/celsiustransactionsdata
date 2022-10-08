@@ -7,6 +7,7 @@ const multiAddresses = new Set([])
 const singleAddresses = new Set([])
 const usedAccounts = new Set([])
 const usedTypes = new Set([])
+const usedDescriptivePurposes = new Set([])
 
 // Accounts:
 const accounts = [
@@ -195,6 +196,12 @@ for (let i = 47; i <= 14384; i++) {
         usedTypes.add(row.type)
     }
 
+    // validate that descriptivePurposes are not too variant
+    for(let i = 0; i < page.length; i++) {
+        const row = page[i]
+        usedDescriptivePurposes.add(row.descriptivePurpose)
+    }
+
     // validate dates
     // validate accounts are not too variant
     // validate types are not too variant
@@ -286,4 +293,9 @@ if (!eqSet(usedAccounts, new Set(accounts))) {
 // validate types
 if (!eqSet(usedTypes, new Set(types))) {
     throw new Error(`Types don't match`)
+}
+
+// validate descriptivePurposes
+if (!eqSet(usedDescriptivePurposes, new Set(descriptivePurposes))) {
+    throw new Error(`Descriptive purposes don't match`)
 }

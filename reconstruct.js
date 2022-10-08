@@ -1,3 +1,4 @@
+const fs = require('fs')
 const usernames = require('./usernames/usernames.json')
 const { isDate, isDateish } = require('./utils')
 
@@ -85,7 +86,7 @@ function reconstruct(page) {
         }
 
         if (mode === "date") {
-            // TODO: might not work if token is just "Earn"
+            // TODO: might not work if token is just "Ear"
             if (token.startsWith("Earn") || token.startsWith('Custody') || token.startsWith('Withheld')) {
                 mode = "account"
                 date = stack
@@ -107,7 +108,7 @@ function reconstruct(page) {
         if (mode === "account") {
             if (accounts.includes(stack.join(''))) {
                 mode = "type"
-                account = stack
+                account = stack.join('')
                 stack = [token]
                 continue
             }
@@ -115,7 +116,7 @@ function reconstruct(page) {
         if (mode === "type") {
             if (types.includes(stack.join(''))) {
                 mode = "descriptive_purpose"
-                type = stack
+                type = stack.join('')
                 stack = [token]
                 continue
             }
@@ -123,7 +124,7 @@ function reconstruct(page) {
         if (mode === "descriptive_purpose") {
             if (descriptivePurposes.includes(stack.join(''))) {
                 mode = "coin"
-                descriptivePurpose = stack
+                descriptivePurpose = stack.join('')
                 stack = [token]
                 continue
             }
@@ -131,7 +132,7 @@ function reconstruct(page) {
         if (mode === "coin") {
             if (coins.includes(stack.join(''))) {
                 mode = "coin_quantity"
-                coin = stack
+                coin = stack.join('')
                 stack = [token]
                 continue
             }
@@ -193,29 +194,13 @@ function reconstruct(page) {
 
     table.push(row)
     return table
-
-    // for (let i = 0; i < contPage.length; i++) {
-    //     const token = contPage[i]
-
-
-
-    //     // if (accounts.includes(token)) {
-    //     //     console.log(token)
-    //     // }
-    //     // if (descriptivePurposes.includes(token)) {
-    //     //     console.log(token)
-    //     // }
-    //     // if (types.includes(token)) {
-    //     //     console.log(token)
-    //     // }
-    //     // if (tokens.includes(token)) {
-    //     //     console.log(token)
-    //     // }
-    // }
 }
 
 for (let i = 47; i <= 47; i++) {
     const pageNum = i - 46
     const page = require(`./json-pass-1/coin_transactions_page_${pageNum}.json`);
-    console.log(reconstruct(page))
+    const table = reconstruct(page)
+    fs.writeFile(`./json-pass-2/coin_transactions_${pageNum}.json`, JSON.stringify(table, null, 2), (err) => {
+        console.log('processed page ' + pageNum);
+    });
 }

@@ -166,10 +166,19 @@ function reconstruct(page, pageNum) {
 
         if (mode === "account") {
             if (accounts.includes(trimTokens(stack).join(''))) {
-                mode = "type"
-                account = trimTokens(stack).join('')
-                stack = [token]
-                continue
+                const accountHere = trimTokens([...stack, token]).join('')
+                if (accounts.includes(accountHere)) {
+                    mode = "type"
+                    account = accountHere
+                    stack = []
+                    continue
+                }
+                else {
+                    mode = "type"
+                    account = trimTokens(stack).join('')
+                    stack = [token]
+                    continue    
+                }
             }
         }
         if (mode === "type") {

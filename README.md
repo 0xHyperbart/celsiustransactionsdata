@@ -12,3 +12,6 @@ TODO: test that the above works.
 
 ## Contributing
 Feel free to fill out an issue or open a PR.
+
+## License
+MIT License

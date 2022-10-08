@@ -6,6 +6,7 @@ const { eqSet } = require('./utils')
 const multiAddresses = new Set([])
 const singleAddresses = new Set([])
 const usedAccounts = new Set([])
+const usedTypes = new Set([])
 
 // Accounts:
 const accounts = [
@@ -188,6 +189,12 @@ for (let i = 47; i <= 14384; i++) {
         usedAccounts.add(row.account)
     }
 
+    // validate that types are not too variant
+    for(let i = 0; i < page.length; i++) {
+        const row = page[i]
+        usedTypes.add(row.type)
+    }
+
     // validate dates
     // validate accounts are not too variant
     // validate types are not too variant
@@ -274,4 +281,9 @@ if (multiAddresses.size > 0) {
 // validate accounts
 if (!eqSet(usedAccounts, new Set(accounts))) {
     throw new Error(`Accounts don't match`)
+}
+
+// validate types
+if (!eqSet(usedTypes, new Set(types))) {
+    throw new Error(`Types don't match`)
 }

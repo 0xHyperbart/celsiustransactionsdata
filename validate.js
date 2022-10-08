@@ -1,4 +1,3 @@
-const fs = require('fs')
 const usernamesLeft = {...require('./usernames/usernames.json')}
 const usernamesCopy = {...require('./usernames/usernames.json')}
 const { eqSet } = require('./utils')

@@ -1,14 +1,3 @@
-// Accounts:
-const accounts = [
-    "Earn - Interest; Earn, Custody or Withheld - Rewards",
-    "Earn",
-    "Custody",
-    "EarnIncoming",
-    "EarnOutgoing",
-    "Witheld",
-    "Withheld"
-]
-
 // Descriptive Purpose:
 const descriptivePurposes = [
     "Collateral",

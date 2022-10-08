@@ -176,6 +176,19 @@ function validateCoinQuantity(page) {
     return true
 }
 
+function validateDates(page) {
+    for(let i = 0; i < page.length; i++) {
+        const row = page[i]
+        const date = row.date.join('')
+        const singleDate = date.match(/(\d\d?)\/(\d\d?)\/(\d\d\d\d)/)
+        const multiDate = date.match(/(\d\d?)\/(\d\d?)\/(\d\d\d\d)\s+-\s+(\d\d?)\/(\d\d?)\/(\d\d\d\d)/)
+        // console.log('singleDate', singleDate, 'multiDate', multiDate)
+        if (!singleDate && !multiDate) {
+            return false
+        }
+    }
+    return true
+}
 
 for (let i = 47; i <= 14384; i++) {
     const pageNum = i - 46
@@ -226,6 +239,9 @@ for (let i = 47; i <= 14384; i++) {
     }
 
     // validate dates
+    if (!validateDates(page)) {
+        throw new Error(`Invalid dates on page ${pageNum}`)
+    }
 
     if (!validatePageRowCount(page, i)) {
         throw new Error(`Page ${pageNum} doesn't have the right number of rows, but instead ${page.length}`)

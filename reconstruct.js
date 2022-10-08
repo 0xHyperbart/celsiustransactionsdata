@@ -38,12 +38,19 @@ const types = [
 const coins = [
     'ETH', 'BTC', 'USDC', 'CEL', 'LTC', 'BCH', 'MANA', 'MATIC', 'ADA', 'LINK',
     'SNX', 'AAVE', 'UNI', 'OMG', 'SUSHI', 'UMA', 'XTZ', 'MCDAI', 'ZEC', 'DOGE',
-    'DOT', 'SOL', 'AVAX', 'USDT ERC20', 'GUSD', 'XRP', 'LUNC', 'DASH', 'COMP',
+    'DOT', 'SOL', 'AVAX', 'USDTERC20', 'GUSD', 'XRP', 'LUNC', 'DASH', 'COMP',
     'BNB', 'PAXG', 'XLM', 'BAT', 'BUSD', 'EOS', 'BSV', 'PAX', 'ETC', 'ZRX',
     'SGB', 'TCAD', 'KNC', 'TAUD', 'SPARK', 'TUSD', 'UST', 'THKD', 'BNT', 'TGBP',
     'LPT', 'MKR', 'WBTC', 'XAUT', 'CRV', 'ZUSD', 'BADGER', 'YFI', 'CVX', 'WDGLD',
     '1INCH'
 ]
+
+function coinMatch(tokens) {
+    const trimmedSpaceTokens = tokens.map(token => token.replace(/\s+/g, ''))
+    const trimmedTokens = trimTokens(trimmedSpaceTokens)
+    const coinToCheck = trimmedTokens.join('')
+    return coins.includes(coinToCheck)
+}
 
 function reconstruct(page, pageNum) {
     const contPage = page.flat()
@@ -151,17 +158,17 @@ function reconstruct(page, pageNum) {
 
 
         if (mode === "account") {
-            if (accounts.includes(stack.join(''))) {
+            if (accounts.includes(trimTokens(stack).join(''))) {
                 mode = "type"
-                account = stack.join('')
+                account = trimTokens(stack).join('')
                 stack = [token]
                 continue
             }
         }
         if (mode === "type") {
-            if (types.includes(stack.join(''))) {
+            if (types.includes(trimTokens(stack).join(''))) {
                 mode = "descriptive_purpose"
-                type = stack.join('')
+                type = trimTokens(stack).join('')
                 stack = [token]
                 continue
             }
@@ -175,9 +182,9 @@ function reconstruct(page, pageNum) {
             }
         }
         if (mode === "coin") {
-            if (coins.includes(stack.join(''))) {
+            if (coinMatch(stack)) {
                 mode = "coin_quantity"
-                coin = stack.join('')
+                coin = trimTokens(stack.map(token => token.replace(/\s+/g))).join('')
                 stack = [token]
                 continue
             }
@@ -214,7 +221,7 @@ function reconstruct(page, pageNum) {
         }
     }
     if (mode !== 'username') {
-        console.log('mode', mode)
+        console.log('mode', mode, pageNum)
     }
     return table
 }

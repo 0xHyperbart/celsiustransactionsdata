@@ -15,7 +15,6 @@ module.exports.isDateish = function isNumeric(token) {
 module.exports.isDollarSign = function isNumeric(token) {
     return token.includes('$')
 }
-
 module.exports.trimTokens = function trimTokens(tokens) {
     const tokensCopy = []
     for(let i = 0; i < tokens.length; i++) {
@@ -26,7 +25,6 @@ module.exports.trimTokens = function trimTokens(tokens) {
     }
     return tokensCopy
 }
-
 module.exports.eqSet = (xs, ys) =>
     xs.size === ys.size &&
     [...xs].every((x) => ys.has(x));

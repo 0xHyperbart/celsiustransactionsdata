@@ -161,6 +161,21 @@ function validateOutgoing(page) {
     return true
 }
 
+function validateCoinQuantity(page) {
+    for(let i = 0; i < page.length; i++) {
+        const row = page[i]
+        const coinQuantity = row.coinQuantity.join('')
+        const coinQuantityMatch = coinQuantity.match(/^\(?([\d\.\,]+)\)?$/)
+        const theMatch = coinQuantityMatch[1]
+        const noCommas = theMatch.replace(/,/g, '')
+        const num = parseFloat(noCommas)
+        if (isNaN(num)) {
+            return false
+        }
+    }
+    return true
+}
+
 
 for (let i = 47; i <= 14384; i++) {
     const pageNum = i - 46
@@ -227,6 +242,10 @@ for (let i = 47; i <= 14384; i++) {
 
     if (!validateOutgoing(page)) {
         throw new Error(`Page ${pageNum} doesn't have the amounts that correspond to type.`)
+    }
+
+    if (!validateCoinQuantity(page)) {
+        throw new Error(`Page ${pageNum} doesn't have parsable coin quantity values.`)
     }
 
 }

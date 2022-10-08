@@ -122,7 +122,8 @@ function reconstruct(page, pageNum) {
 
         if (mode === "date") {
             // TODO: might not work if token is just "Ear"
-            if (token.startsWith("Earn") || token.startsWith('Custody') || token.startsWith('Witheld')) {
+            const tokenAndLookahead = token + lookAhead()
+            if (tokenAndLookahead.startsWith("Earn") || tokenAndLookahead.startsWith('Custody') || tokenAndLookahead.startsWith('Witheld')) {
                 mode = "account"
                 date = trimTokens(stack)
                 stack = [token]
@@ -183,7 +184,7 @@ function reconstruct(page, pageNum) {
         if (mode === "coin") {
             if (coinMatch(stack)) {
                 mode = "coin_quantity"
-                coin = trimTokens(stack.map(token => token.replace(/\s+/g))).join('')
+                coin = trimTokens(stack.map(token => token.replace(/\s+/g, ''))).join('')
                 stack = [token]
                 continue
             }

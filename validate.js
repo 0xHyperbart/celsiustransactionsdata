@@ -164,7 +164,6 @@ for (let i = 47; i <= 14384; i++) {
     // validate types are not too variant
     // validate descriptive purposes are not too variant
     // validate coins are not too variant
-    // validate outgoing always being a negative amount
 
     if (!validatePageRowCount(page, i)) {
         throw new Error(`Page ${pageNum} doesn't have the right number of rows.`)

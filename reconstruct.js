@@ -180,9 +180,9 @@ function reconstruct(page, pageNum) {
             }
         }
         if (mode === "descriptive_purpose") {
-            if (descriptivePurposes.includes(stack.join(''))) {
+            if (descriptivePurposes.includes(trimTokens(stack).join(''))) {
                 mode = "coin"
-                descriptivePurpose = stack.join('')
+                descriptivePurpose = trimTokens(stack).join('')
                 stack = [token]
                 continue
             }

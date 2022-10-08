@@ -1,6 +1,6 @@
 const fs = require('fs')
 const usernames = require('./usernames/usernames.json')
-const { isDate, isDateish, trimTokens, isNumericFully } = require('./utils')
+const { isDate, isDateish, trimTokens, isNumericFully, isDollarSign } = require('./utils')
 
 // Accounts:
 const accounts = [
@@ -136,6 +136,12 @@ function reconstruct(page, pageNum) {
                 if (isNumericFully(lookAhead())) {
                     lookaheadToken = next()
                     coinQuantity = [...stack, lookaheadToken]
+                    mode = 'coin_usd'
+                    stack = []
+                    continue
+                }
+                else if (isDollarSign(lookAhead())) {
+                    coinQuantity = [...stack]
                     mode = 'coin_usd'
                     stack = []
                     continue

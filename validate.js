@@ -2,6 +2,8 @@ const fs = require('fs')
 const usernamesLeft = {...require('./usernames/usernames.json')}
 const usernamesCopy = {...require('./usernames/usernames.json')}
 
+const multiAddresses = new Set([])
+
 // Accounts:
 const accounts = [
     "Earn - Interest; Earn, Custody or Withheld - Rewards",
@@ -157,10 +159,21 @@ for (let i = 47; i <= 14384; i++) {
     const pageNum = i - 46
     const page = require(`./json-pass-2/coin_transactions_${pageNum}.json`);
 
+    // validate that we're using all usernames
     for(let i = 0; i < page.length; i++) {
         const row = page[i]
         const username = row.username
         delete usernamesLeft[username.join('')]
+    }
+
+    // validate that addresses from multiple tokens are ok
+    for(let i = 0; i < page.length; i++) {
+        const row = page[i]
+        if (row.address.length > 1) {
+            if (!row.address.join('').match(/^\d+/)) {
+                multiAddresses.add(row.address.join(''))
+            }
+        }
     }
 
     // list addresses
@@ -188,6 +201,8 @@ for (let i = 47; i <= 14384; i++) {
     }
 
 }
+
+// validate users left
 const usernamesLeftArray = Object.keys(usernamesLeft).map((usernameKey) => {
     return [usernameKey, usernamesLeft[usernameKey]]
 })
@@ -227,3 +242,19 @@ delete usernamesLeft['กรินทร์เชษฐศาสน์'] // chec
 if (Object.keys(usernamesLeft).length > 0) {
     throw new Error(`Usernames left: ${JSON.stringify(usernamesLeft)}`)
 }
+
+// validate multi addresses
+multiAddresses.delete("MARICORP SERVICES LTD. 31 THE STRAND 46 CANAL POINT DRIVE, GEORGE TOWN, GRAND CAYMAN, K")
+multiAddresses.delete("CORE BUSINESS ACCOUNTANTS PTY LTD, 'K1' U 11, 16 INNOVATION PARKWAY,, BIRTINYA , 4575 AUSTRA")
+multiAddresses.delete("GLENARM CRESCENT, KILLARNEY HEIGHTS, 2087 AUSTRALIA")
+multiAddresses.delete("MARKET STREET, 758 CAMANA BAY, GRAND CAYMAN, KY1-9006 CAYMAN ISLANDS")
+multiAddresses.delete("N LOMBARD AVΕ, LOMBARD , ILLINOIS 60148")
+multiAddresses.delete('SCARRS RD, GARDEN ISLAND CREEK, TASMANIA , 7112 AUSTRALIA4/14/2')
+multiAddresses.delete('MAPLES CORPORATE SERVICES LIMITED,UGLAND HOUSE, GRAND CAYMAN, KY1-1104 CAYMAN ISLANDS')
+multiAddresses.delete('CAYE FINANCIAL CENTRE, COR. COCONUT DR. & HURRICANE WAY, , SAN PEDRO TOWN, AMBERGRIS CA')
+multiAddresses.delete('ROOM 1001, 10/F, TOWER B, NEW MANDARIN PLAZA, 14 SCIENCE MUSEUM ROAD, HONG KONG, HONG K')
+multiAddresses.delete('SUITE 214, 396 SCARBOROUGH BEACH ROAD, OSBORNE PARK, WESTERN AUSTRALIA, 6017 AUSTRALIA')
+if (multiAddresses.size > 0) {
+    throw new Error(`Multi addresses left: ${JSON.stringify([...multiAddresses])}`)
+}
+

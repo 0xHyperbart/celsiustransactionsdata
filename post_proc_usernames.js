@@ -13,6 +13,8 @@ for (let i = 0; i < usernamesArray.length; i++) {
     }
 }
 
+delete usernames[""];
+
 delete usernames["0ALEC STEIMEL"];
 usernames["ALEC STEIMEL"] = ["ALEC STEIMEL"]
 

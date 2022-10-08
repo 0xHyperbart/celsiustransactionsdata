@@ -117,6 +117,40 @@ function validateCoinUsd(page) {
     return true
 }
 
+function validateOutgoing(page) {
+    for(let i = 0; i < page.length; i++) {
+        const row = page[i]
+        const coinQuantity = row.coinQuantity.join('')
+        // TODO: if row.coinUSD is [], set it to null
+        const coinUSD = row.coinUSD ? row.coinUSD.join('') : null
+        if (row.type === 'Outgoing') {
+            if (!coinQuantity.match(/^\([\d\.\,]+\)$/) && coinQuantity !== '0.0') {
+                console.log('Outgoing coinQuantity',coinQuantity)
+                return false
+            }
+            if (coinUSD) {
+                if (!coinUSD.match(/^\(\$[\d\,]+\.\d\d\)$/) && coinUSD !== '$0.00') {
+                    console.log('Outgoing coinUSD',coinUSD)
+                    return false
+                }    
+            }
+        }
+        else if (row.type === 'Incoming') {
+            if (!coinQuantity.match(/^[\d\.\,]+$/)) {
+                console.log('Incoming coinQuantity',coinQuantity)
+                return false
+            }
+            if (coinUSD) {
+                if (!coinUSD.match(/^\$[\d\,]+\.\d\d$/)) {
+                    console.log('Incoming coinUSD',coinUSD)
+                    return false
+                }    
+            }
+        }
+    }
+    return true
+}
+
 
 for (let i = 47; i <= 14384; i++) {
     const pageNum = i - 46
@@ -142,6 +176,10 @@ for (let i = 47; i <= 14384; i++) {
 
     if (!validateCoinUsd(page)) {
         throw new Error(`Page ${pageNum} doesn't have the right coin USD values.`)
+    }
+
+    if (!validateOutgoing(page)) {
+        throw new Error(`Page ${pageNum} doesn't have the amounts that correspond to type.`)
     }
 
 }

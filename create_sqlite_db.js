@@ -1,5 +1,5 @@
 const sqlite3 = require('sqlite3').verbose();
-const db = new sqlite3.Database('./db.sqlite3');
+const db = new sqlite3.Database('./sqlite-pass-4/db.sqlite3');
 
 db.serialize(() => {
     db.run("BEGIN TRANSACTION");
@@ -23,7 +23,7 @@ db.serialize(() => {
 
     db.run("BEGIN TRANSACTION");
 
-    for (let i = 47; i <= 47; i++) {
+    for (let i = 47; i <= 14384; i++) {
         const pageNum = i - 46
         const page = require(`./json-pass-3/coin_transactions_${pageNum}.json`);
         for(let i = 0; i < page.length; i++) {

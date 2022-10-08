@@ -180,10 +180,11 @@ function validateDates(page) {
     for(let i = 0; i < page.length; i++) {
         const row = page[i]
         const date = row.date.join('')
-        const singleDate = date.match(/(\d\d?)\/(\d\d?)\/(\d\d\d\d)/)
-        const multiDate = date.match(/(\d\d?)\/(\d\d?)\/(\d\d\d\d)\s+-\s+(\d\d?)\/(\d\d?)\/(\d\d\d\d)/)
+        const singleDate = date.match(/^(\d\d?)\/(\d\d?)\/(\d\d\d\d)$/)
+        const multiDate = date.match(/^(\d\d?)\/(\d\d?)\/(\d\d\d\d)\s+-\s+(\d\d?)\/(\d\d?)\/(\d\d\d\d)$/)
         // console.log('singleDate', singleDate, 'multiDate', multiDate)
         if (!singleDate && !multiDate) {
+            console.log('invalid date', date)
             return false
         }
     }

@@ -155,7 +155,7 @@ function reconstruct(page, pageNum) {
                     continue
                 }
             }
-            if (token[0] == '$' || token[1] == '$') {
+            if (token[0] == '(' || token[0] == '$' || token[1] == '$') {
                 mode = "coin_usd"
                 coinQuantity = stack
                 stack = [token]

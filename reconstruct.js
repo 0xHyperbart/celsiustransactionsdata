@@ -133,14 +133,15 @@ function reconstruct(page, pageNum) {
 
         if (mode === "coin_quantity") {
             if (token === '🟥') {
-                if (isNumericFully(lookAhead())) {
+                const lookingAhead = lookAhead()
+                if (lookingAhead && isNumericFully(lookingAhead)) {
                     lookaheadToken = next()
                     coinQuantity = [...stack, lookaheadToken]
                     mode = 'coin_usd'
                     stack = []
                     continue
                 }
-                else if (isDollarSign(lookAhead())) {
+                else if (lookingAhead && isDollarSign(lookingAhead)) {
                     coinQuantity = [...stack]
                     mode = 'coin_usd'
                     stack = []

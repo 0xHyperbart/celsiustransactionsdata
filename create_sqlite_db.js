@@ -30,7 +30,7 @@ db.serialize(() => {
             const row = page[i]
             const {address, date, account, type, descriptivePurpose, coin, coinQuantity} = row
             const username = JSON.stringify(row.username)
-            const username_joined = row.username.join('')
+            const username_joined = row.username.join(' ')
             const coinUSD = row.coinUSD || ""
             db.run(
                 `INSERT INTO transactions (

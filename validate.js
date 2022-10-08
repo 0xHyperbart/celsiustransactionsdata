@@ -6,7 +6,8 @@ const accounts = [
     "Earn - Interest; Earn, Custody or Withheld - Rewards",
     "Earn",
     "Custody",
-    "Witheld"
+    "Witheld",
+    "Withheld"
 ]
 
 // Descriptive Purpose:

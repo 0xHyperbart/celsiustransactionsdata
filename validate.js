@@ -80,6 +80,26 @@ function validateFieldsNotNull(page) {
     return true
 }
 
+function validatePageRowCount(page, i) {
+    if (page.length === 221) {
+        return true // normal page
+    }
+    if (page.length === 12 && i === 4570) {
+        return true // exception page
+    }
+    if (page.length === 135 && i === 9093) {
+        return true // exception page
+    }
+    if (page.length === 187 && i === 13622) {
+        return true // exception page
+    }
+    if (page.length === 78 && i === 14384) {
+        return true // last page
+    }
+
+    return false
+}
+
 for (let i = 47; i <= 14384; i++) {
     const pageNum = i - 46
     const page = require(`./json-pass-2/coin_transactions_${pageNum}.json`);
@@ -96,24 +116,10 @@ for (let i = 47; i <= 14384; i++) {
     // validate outgoing always being a negative amount
 
     if (!validateFieldsNotNull(page)) {
-        throw new Error(`Page ${pageNum} is invalid.`)
+        throw new Error(`Page ${pageNum} doesn't have all fields filled out.`)
     }
 
-    if (page.length === 221) {
-        continue // normal page
+    if (!validatePageRowCount(page, i)) {
+        throw new Error(`Page ${pageNum} doesn't have the right number of rows.`)
     }
-    if (page.length === 12 && i === 4570) {
-        continue // exception page
-    }
-    if (page.length === 135 && i === 9093) {
-        continue // exception page
-    }
-    if (page.length === 187 && i === 13622) {
-        continue // exception page
-    }
-    if (page.length === 78 && i === 14384) {
-        continue // last page
-    }
-
-    console.log(`Page ${pageNum} is not valid. Page length: ${page.length}`)
 }

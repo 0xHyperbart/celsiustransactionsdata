@@ -16,6 +16,8 @@ usernames["RICHARD H. MONTGOMERY III IRREVOCABLE TRUST FBO WILLIAM J. MONTGOMERY
 
 usernames["SPRING VALLEY REVOCABLE LIVING TRUST U/A DTD 4/29/1998"] = ["SPRING VALLEY REVOCABLE LIVING TRUST U/A DTD 4/29/1998"]
 
+usernames["STILLAHN-LANG TRUST DTD 02/19/2015"] = ["STILLAHN-LANG TRUST DTD 02/19/2015"]
+
 fs.writeFile(`./usernames/usernames.json`, JSON.stringify(usernames, null, 2), (err) => {
     console.log('usernames patched');
 });

@@ -1,6 +1,6 @@
 const fs = require('fs')
 const usernames = require('./usernames/usernames.json')
-const { isDate, isDateish, trimTokens, isNumeric } = require('./utils')
+const { isDate, isDateish, trimTokens, isNumericFully } = require('./utils')
 
 // Accounts:
 const accounts = [
@@ -124,7 +124,7 @@ function reconstruct(page, pageNum) {
 
         if (mode === "coin_quantity") {
             if (token === '🟥') {
-                if (isNumeric(lookAhead())) {
+                if (isNumericFully(lookAhead())) {
                     lookaheadToken = next()
                     coinQuantity = [...stack, lookaheadToken]
                     mode = 'coin_usd'
@@ -183,20 +183,30 @@ function reconstruct(page, pageNum) {
         }
         if (mode === "coin_usd") {
             if (token === '🟥') {
-                mode = "username"
-                coinUSD = stack
-                endRow()
-                stack = []
-                continue
+                if (isNumericFully(lookAhead())) {
+                    lookaheadToken = next()
+                    coinUSD = [...stack, lookaheadToken]
+                    mode = 'username'
+                    endRow()
+                    stack = []
+                    continue
+                }
+                else {
+                    mode = "username"
+                    coinUSD = stack
+                    endRow()
+                    stack = []
+                    continue
+                }
             }
         }
 
         stack.push(token)
 
         if (mode === "username") {
-            if (usernames[stack.join('')]) {
+            if (trimTokens(stack).length && usernames[trimTokens(stack).join('')]) {
                 mode = "address"
-                username = stack
+                username = trimTokens(stack)
                 stack = []
                 continue
             }

@@ -6,6 +6,9 @@ module.exports.isDate = function isDate(token) {
 module.exports.isNumeric = function isNumeric(token) {
     return /^(\d|\(|\.)/.test(token)
 }
+module.exports.isNumericFully = function isNumeric(token) {
+    return /^[\d\(\.]+$/.test(token)
+}
 module.exports.isDateish = function isNumeric(token) {
     return /^\d\d?$/.test(token)
 }

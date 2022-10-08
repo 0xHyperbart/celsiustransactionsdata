@@ -1,6 +1,6 @@
 const fs = require('fs')
 const usernames = require('./usernames/usernames.json')
-const { isDate, isDateish } = require('./utils')
+const { isDate, isDateish, trimTokens } = require('./utils')
 
 // Accounts:
 const accounts = [
@@ -89,7 +89,7 @@ function reconstruct(page) {
             // TODO: might not work if token is just "Ear"
             if (token.startsWith("Earn") || token.startsWith('Custody') || token.startsWith('Withheld')) {
                 mode = "account"
-                date = stack
+                date = trimTokens(stack)
                 stack = [token]
                 continue
             }
@@ -196,7 +196,7 @@ function reconstruct(page) {
     return table
 }
 
-for (let i = 47; i <= 47; i++) {
+for (let i = 47; i <= 14384; i++) {
     const pageNum = i - 46
     const page = require(`./json-pass-1/coin_transactions_page_${pageNum}.json`);
     const table = reconstruct(page)

@@ -1,16 +1,6 @@
 const fs = require('fs')
-const { isDate, isNumeric, isDollarSign } = require('./utils')
+const { isDate, isDollarSign, trimTokens } = require('./utils')
 
-function trimTokens(tokens) {
-    const tokensCopy = []
-    for(let i = 0; i < tokens.length; i++) {
-        const token = tokens[i]
-        if (token !== '') {
-            tokensCopy.push(token)
-        }
-    }
-    return tokensCopy
-}
 
 let usernames = {}
 let usernamesStats = {}

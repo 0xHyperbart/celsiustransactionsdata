@@ -241,6 +241,7 @@ function reconstruct(page, pageNum) {
     }
     return table
 }
+// TODO: don't minus 46, just output the page number as in the pdfs
 
 for (let i = 47; i <= 14384; i++) {
     const pageNum = i - 46

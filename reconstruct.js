@@ -202,7 +202,6 @@ function reconstruct(page, pageNum) {
             }
         }
     }
-    endRow()
     if (mode !== 'username') {
         console.log('mode', mode)
     }

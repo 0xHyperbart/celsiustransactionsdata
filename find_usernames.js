@@ -46,18 +46,23 @@ function reconstructUsernames(page, pdfNum) {
 
                 if (token === "🟥") {
                     if (
+                        // TODO: the ad-hoc list here is not ideal, it may lead to missing usernames
                         firstTokenAfterMark !== "Earn - Interest; Earn, Custody or Withheld - Rewards" &&
                         firstTokenAfterMark !== "rest and Rewards" &&
                         firstTokenAfterMark !== "Interest and Rewards" &&
+                        firstTokenAfterMark !== " Custody or Withheld - Rewards" &&
+                        firstTokenAfterMark !== "20" && // TODO: double check this username is not missing
+                        firstTokenAfterMark !== "796.73" && // TODO: double check this username is not missing
                         !isDate(firstTokenAfterMark) && 
-                        !isNumeric (firstTokenAfterMark) &&
                         !isDollarSign(firstTokenAfterMark) &&
                         stack[1] !== 'Interest and Rewards' &&
                         !isDate(stack[1]) &&
+                         // TODO: double check these username is not missing
                         stack[1] !== 'ALLEN AVENUE, ST. LOUIS, MISSOURI 63119' &&
                         stack[1] !== '67 FORT STREET, GRAND CAYMAN, KY1-1102 CAYMAN ISLANDS'
                     ) {
                         if (
+                            // FYI: the list bellow is ok, we're just checking for companies which have physical address
                             firstTokenAfterMark !== 'AYKAN SEVINC' && 
                             firstTokenAfterMark !== 'KFV VINC' && 
                             firstTokenAfterMark !== 'LAM M.D., P.C.' && 
@@ -109,8 +114,8 @@ function reconstructUsernames(page, pdfNum) {
                             !firstTokenAfterMark.includes(' S.R.O.') && 
                             !firstTokenAfterMark.includes(' COMPANY') && 
                             !firstTokenAfterMark.includes(' FUND') && 
-                            !firstTokenAfterMark.includes(' LLC') && 
-                            !firstTokenAfterMark.includes(' INC')) {
+                            !firstTokenAfterMark.includes(' INC') &&
+                            !firstTokenAfterMark.includes(' LLC')) {
 
                             if (contPage[i + 1] === "ADDRESS REDACTED" || contPage[i + 1] === "🟥") {
                                 addUsername([...stack])
@@ -136,14 +141,22 @@ function reconstructUsernames(page, pdfNum) {
                                 isLastTokenAMark = false   
                                 continue
                             }
-                            console.log('unusual username', stack, pdfNum, contPage[i + 1], contPage[i + 2], contPage[i + 3], contPage[i + 4])
+                            if (contPage[i + 5] === "ADDRESS REDACTED" && stack[0] === "01" && stack[1] === '') {
+                                // special case for ANTONIO BRA Č I Ć
+                                addUsername([contPage[i + 1], contPage[i + 2], contPage[i + 3], contPage[i + 4]])
+                                stack = []
+                                isLastTokenAMark = false
+                                continue
+                            }
+                            console.log('unusual username', stack, pdfNum, contPage[i + 1], contPage[i + 2], contPage[i + 3], contPage[i + 4], contPage[i + 5])
                         }
                         else {
                             addUsername([firstTokenAfterMark])
                         }
                     }
                     stack = []
-                    isLastTokenAMark = false
+                    isLastTokenAMark = true
+                    firstTokenAfterMark = ""
                     continue
                 }
                 stack.push(token)

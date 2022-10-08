@@ -3,6 +3,7 @@ const usernamesLeft = {...require('./usernames/usernames.json')}
 const usernamesCopy = {...require('./usernames/usernames.json')}
 
 const multiAddresses = new Set([])
+const singleAddresses = new Set([])
 
 // Accounts:
 const accounts = [
@@ -174,9 +175,11 @@ for (let i = 47; i <= 14384; i++) {
                 multiAddresses.add(row.address.join(''))
             }
         }
+        else {
+            singleAddresses.add(row.address.join(''))
+        }
     }
 
-    // list addresses
     // validate dates
     // validate accounts are not too variant
     // validate types are not too variant
@@ -258,3 +261,4 @@ if (multiAddresses.size > 0) {
     throw new Error(`Multi addresses left: ${JSON.stringify([...multiAddresses])}`)
 }
 
+// console.log('singleAddresses',singleAddresses)

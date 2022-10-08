@@ -219,4 +219,11 @@ delete usernamesLeft["MIKS VASI"] // checked, matched ok
 delete usernamesLeft["QUÂN TR"] // checked, matched ok
 delete usernamesLeft["TOMÁŠ HLA"] // checked, matched ok
 
+delete usernamesLeft['กนกกาญจน์โฆสิ'] // checked, matched ok
+delete usernamesLeft['ตโภคะ'] // checked, part of the name above
+delete usernamesLeft['ชั'] // checked, matched ok
+delete usernamesLeft['ชวาลย์นามนาเมือง'] // checked, part of the name above
+delete usernamesLeft['สั'] // checked, matched ok
+delete usernamesLeft['กรินทร์เชษฐศาสน์'] // checked, part of the name above
+
 console.log('unused usernames',usernamesLeft)

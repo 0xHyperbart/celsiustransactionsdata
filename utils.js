@@ -1,5 +1,5 @@
 module.exports.isDate = function isDate(token) {
-    const isSingleDate = /\d\d?\/\d\d?\/\d\d\d?\d?/.test(token)
+    const isSingleDate = /\d\d?\/\d\d?\/\d\d?\d?\d?/.test(token)
     const isMultiDate = /\d\d?\/\d\d?\/\d\d\d\d\s+-\s+\d\d?\/\d\d?\/\d\d\d\d/.test(token)
     return isSingleDate || isMultiDate
 }

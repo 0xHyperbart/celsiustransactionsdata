@@ -4,12 +4,12 @@ const db = new sqlite3.Database('./sqlite-pass-4/db.sqlite3');
 db.serialize(() => {
     db.run("BEGIN TRANSACTION");
 
-    db.run("DROP TABLE IF EXISTS transactions");
-    db.run("DROP TABLE IF EXISTS transactions_search");
+    db.run("DROP TABLE IF EXISTS transactions;");
+    db.run("DROP TABLE IF EXISTS transactions_search;");
 
     db.run(`CREATE TABLE transactions (
-        username_address TEXT,
         username TEXT,
+        username_joined TEXT,
         address TEXT,
         date TEXT,
         account TEXT,
@@ -30,12 +30,12 @@ db.serialize(() => {
             const row = page[i]
             const {address, date, account, type, descriptivePurpose, coin, coinQuantity} = row
             const username = JSON.stringify(row.username)
+            const username_joined = row.username.join('')
             const coinUSD = row.coinUSD || ""
-            const username_address = `${row.username.join('')} ${address}`
             db.run(
                 `INSERT INTO transactions (
-                    username_address,
                     username,
+                    username_joined,
                     address,
                     date,
                     account,
@@ -44,15 +44,14 @@ db.serialize(() => {
                     coin,
                     coin_quantity,
                     coin_usd
-                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`, username_address, username, address, date, account, type, descriptivePurpose, coin, coinQuantity, coinUSD);
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`, username, username_joined, address, date, account, type, descriptivePurpose, coin, coinQuantity, coinUSD);
         }
     }
     db.run("COMMIT");
 
     db.run("BEGIN TRANSACTION");
     db.run(`CREATE VIRTUAL TABLE transactions_search USING fts5(
-        username_address,
-        username,
+        username_joined,
         address,
         date,
         account,
@@ -64,8 +63,7 @@ db.serialize(() => {
     );`)
     db.run(
     `INSERT INTO transactions_search(
-        username_address,
-        username,
+        username_joined,
         address,
         date,
         account,
@@ -75,9 +73,8 @@ db.serialize(() => {
         coin_quantity,
         coin_usd
     ) SELECT 
-        username_address, 
-        username, 
-        address, 
+        username_joined,
+        address,
         date, 
         account, 
         type, 

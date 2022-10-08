@@ -53,6 +53,11 @@ function coinMatch(tokens) {
     return coins.includes(coinToCheck)
 }
 
+function isThai(token) {
+    var re = new RegExp("^[ๅภถุึคตจขชๆไำพะัีรนยบลฃฟหกดเ้่าสวงผปแอิืทมใฝ๑๒๓๔ู฿๕๖๗๘๙๐ฎฑธํ๊ณฯญฐฅฤฆฏโฌ็๋ษศซฉฮฺ์ฒฬฦ]+$", "g");
+    return re.test(token)
+}
+
 function reconstruct(page, pageNum) {
     const contPage = page.flat()
 
@@ -80,6 +85,9 @@ function reconstruct(page, pageNum) {
     }
     function lookAhead() {
         return contPage[0]
+    }
+    function lookAhead13() {
+        return contPage.slice(0, 13)
     }
     function lookAhead8() {
         return contPage.slice(0, 8)
@@ -233,11 +241,11 @@ function reconstruct(page, pageNum) {
         if (mode === "username") {
             const trimmedTokens = trimTokens(stack)
             if (trimmedTokens.length && usernames[trimmedTokens.join('')]) {
-                const lookingAhead8 = lookAhead8()
-                const addressRedactedIndex = lookingAhead8.indexOf('ADDRESS REDACTED')
+                const lookingAhead = isThai(trimmedTokens.join('')) ? lookAhead13() : lookAhead8()
+                const addressRedactedIndex = lookingAhead.indexOf('ADDRESS REDACTED')
                 if (addressRedactedIndex !== -1) {
                     mode = "address"
-                    username = trimTokens([...trimmedTokens, ...lookingAhead8.slice(0, addressRedactedIndex)])
+                    username = trimTokens([...trimmedTokens, ...lookingAhead.slice(0, addressRedactedIndex)])
                     for (let i = 0; i < addressRedactedIndex; i++) {
                         next()
                     }

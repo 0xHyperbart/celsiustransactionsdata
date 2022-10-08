@@ -163,7 +163,6 @@ for (let i = 47; i <= 14384; i++) {
         delete usernamesLeft[username.join('')]
     }
 
-    // validate we use all usernames
     // list addresses
     // validate dates
     // validate accounts are not too variant
@@ -196,7 +195,6 @@ const usernamesArray = Object.keys(usernamesCopy).map((usernameKey) => {
     return [usernameKey, usernamesCopy[usernameKey]]
 })
 
-
 for (let i = 0; i < usernamesLeftArray.length; i++) {
     const [usernameKey, usernameTokens] = usernamesLeftArray[i]
     const betterUsername = usernamesArray.find(([usernameKey2, usernameTokens2]) => {
@@ -226,4 +224,6 @@ delete usernamesLeft['ชวาลย์นามนาเมือง'] // chec
 delete usernamesLeft['สั'] // checked, matched ok
 delete usernamesLeft['กรินทร์เชษฐศาสน์'] // checked, part of the name above
 
-console.log('unused usernames',usernamesLeft)
+if (Object.keys(usernamesLeft).length > 0) {
+    throw new Error(`Usernames left: ${JSON.stringify(usernamesLeft)}`)
+}

@@ -226,7 +226,6 @@ for (let i = 47; i <= 14384; i++) {
     }
 
     // validate dates
-    // validate that coin quantity is parsable
 
     if (!validatePageRowCount(page, i)) {
         throw new Error(`Page ${pageNum} doesn't have the right number of rows, but instead ${page.length}`)

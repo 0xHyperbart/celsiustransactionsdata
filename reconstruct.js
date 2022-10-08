@@ -137,7 +137,6 @@ function reconstruct(page, pageNum) {
                     coinQuantity = [...stack, lookaheadToken]
                     mode = 'coin_usd'
                     stack = []
-                    // throw new Error(`stop ${pageNum}`)
                     continue
                 }
                 else {

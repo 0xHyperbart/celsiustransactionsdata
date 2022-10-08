@@ -46,7 +46,16 @@ const coins = [
 for (let i = 47; i <= 14384; i++) {
     const pageNum = i - 46
     const page = require(`./json-pass-2/coin_transactions_${pageNum}.json`);
-    if (page.length !== 221) {
-        console.log(`Page ${pageNum} is not 221, it's ${page.length}`)
+
+    if (page.length === 221) {
+        continue // ok
     }
+    if (page.length === 12 && i === 4570) {
+        continue // ok
+    }
+    if (page.length === 78 && i === 14384) {
+        continue // ok
+    }
+
+    console.log(`Page ${pageNum} is not valid. Page length: ${page.length}`)
 }

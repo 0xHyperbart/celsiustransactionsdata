@@ -18,6 +18,8 @@ usernames["SPRING VALLEY REVOCABLE LIVING TRUST U/A DTD 4/29/1998"] = ["SPRING V
 
 usernames["STILLAHN-LANG TRUST DTD 02/19/2015"] = ["STILLAHN-LANG TRUST DTD 02/19/2015"]
 
+usernames["THE FRANK TRUST REVOCABLE LIVING TRUST 06/30/2021"] = ["THE FRANK TRUST REVOCABLE LIVING TRUST 06/30/2021"]
+
 fs.writeFile(`./usernames/usernames.json`, JSON.stringify(usernames, null, 2), (err) => {
     console.log('usernames patched');
 });

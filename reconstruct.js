@@ -7,7 +7,8 @@ const accounts = [
     "Earn - Interest; Earn, Custody or Withheld - Rewards",
     "Earn",
     "Custody",
-    "Witheld"
+    "Witheld",
+    "Withheld"
 ]
 
 // Descriptive Purpose:
@@ -121,9 +122,8 @@ function reconstruct(page, pageNum) {
         }
 
         if (mode === "date") {
-            // TODO: might not work if token is just "Ear"
             const tokenAndLookahead = token + lookAhead()
-            if (tokenAndLookahead.startsWith("Earn") || tokenAndLookahead.startsWith('Custody') || tokenAndLookahead.startsWith('Witheld')) {
+            if (tokenAndLookahead.startsWith("Earn") || tokenAndLookahead.startsWith('Custody') || tokenAndLookahead.startsWith('Witheld') || tokenAndLookahead.startsWith('Withheld')) {
                 mode = "account"
                 date = trimTokens(stack)
                 stack = [token]

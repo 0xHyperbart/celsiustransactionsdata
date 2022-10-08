@@ -44,9 +44,60 @@ const coins = [
     'LPT', 'MKR', 'WBTC', 'XAUT', 'CRV', 'ZUSD', 'BADGER', 'YFI', 'CVX', 'WDGLD'
 ]
 
+function validateFieldsNotNull(page) {
+    // validate all fields are filled out (not null) (apart from coinUSD)
+    for(let i = 0; i < page.length; i++) {
+        const row = page[i]
+        if (!row.username) {
+            return false
+        }
+        if (!row.address) {
+            return false
+        }
+        if (!row.date) {
+            return false
+        }
+        if (!row.account) {
+            return false
+        }
+        if (!row.type) {
+            return false
+        }
+        if (!row.descriptivePurpose) {
+            return false
+        }
+        if (!row.coin) {
+            return false
+        }
+        if (!row.coinQuantity) {
+            return false
+        }
+        if (!row.coinUSD) {
+            // console.log(row.coinUSD)
+            // return false
+        }
+    }
+    return true
+}
+
 for (let i = 47; i <= 14384; i++) {
     const pageNum = i - 46
     const page = require(`./json-pass-2/coin_transactions_${pageNum}.json`);
+
+
+    // validate we use all usernames
+    // list addresses
+    // validate dates
+    // validate accounts are not too variant
+    // validate types are not too variant
+    // validate descriptive purposes are not too variant
+    // validate coins are not too variant
+    // validate coinUSD always having 2 decimal place for cents
+    // validate outgoing always being a negative amount
+
+    if (!validateFieldsNotNull(page)) {
+        throw new Error(`Page ${pageNum} is invalid.`)
+    }
 
     if (page.length === 221) {
         continue // normal page

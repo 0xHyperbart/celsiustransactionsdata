@@ -1,6 +1,6 @@
 # Celsius Transactions Data
 
-This is a repo which lets you build an indexable sqlite3 database of the transactions from the [Celsius court filling](https://gizmodo.com/celsius-execs-cashed-out-bitcoin-price-crypto-ponzi-1849623526).
+This is a repo which lets you build an indexable sqlite3 database of the coin transactions from the [Celsius court filling](https://gizmodo.com/celsius-execs-cashed-out-bitcoin-price-crypto-ponzi-1849623526).
 
 ## How to use
 1. You will need `pdftk`

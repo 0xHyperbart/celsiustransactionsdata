@@ -4,6 +4,7 @@ json-pass-2
 json-pass-3
 sqlite-pass-4
 csv-pass-4
+json-pass-4
 db.sqlite3
 db.sqlite3-journal
 node_modules

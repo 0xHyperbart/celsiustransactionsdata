@@ -2,16 +2,16 @@ const createCsvWriter = require("csv-writer").createObjectCsvWriter;
 const csvWriter = createCsvWriter({
   path: "csv-pass-4/db.csv",
   header: [
-    { id: "username", name: "username" },
-    { id: "username_joined", name: "username_joined" },
-    { id: "address", name: "address" },
-    { id: "date", name: "date" },
-    { id: "account", name: "account" },
-    { id: "type", name: "type" },
-    { id: "descriptive_purpose", name: "descriptive_purpose" },
-    { id: "coin", name: "coin" },
-    { id: "coin_quantity", name: "coin_quantity" },
-    { id: "coin_usd", name: "coin_usd" },
+    { id: "username", title: "username" },
+    { id: "username_joined", title: "username_joined" },
+    { id: "address", title: "address" },
+    { id: "date", title: "date" },
+    { id: "account", title: "account" },
+    { id: "type", title: "type" },
+    { id: "descriptive_purpose", title: "descriptive_purpose" },
+    { id: "coin", title: "coin" },
+    { id: "coin_quantity", title: "coin_quantity" },
+    { id: "coin_usd", title: "coin_usd" },
   ],
 });
 

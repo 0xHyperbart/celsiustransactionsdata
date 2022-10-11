@@ -1,6 +1,6 @@
 # Celsius Transactions Data
 
-This is a repo which lets you build an indexable sqlite3 database of the coin transactions from the [Celsius court filling](https://gizmodo.com/celsius-execs-cashed-out-bitcoin-price-crypto-ponzi-1849623526).
+This is a repo which lets you build an indexable sqlite3 database of the coin transactions from the [Celsius court fillings](https://gizmodo.com/celsius-execs-cashed-out-bitcoin-price-crypto-ponzi-1849623526).
 
 If all you want is to easily look up the data, you can simply use the [celsiustransactions.com](https://celsiustransactions.com/) website. 
 
